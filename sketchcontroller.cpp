@@ -1,4 +1,4 @@
-#include "main.h"
+#include "sketchcontroller.h"
 
 // void testPos(DC c, int x, int y, bool isAbs=false) {
 // 	c.setCursorPos(x, y, isAbs);
