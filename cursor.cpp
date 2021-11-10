@@ -106,9 +106,8 @@ void DC::setCursorPos(int x, int y, bool isAbs) {
 // 	XFlush(display);
 // }
 
-void DC::sendClick(int button, char mode) {
+void DC::sendClick(int button, bool down) {
 	Display *display = XOpenDisplay(NULL);
-	bool down = (mode == 'P');
 	XTestFakeButtonEvent(display, button, down, CurrentTime);
 	XFlush(display);
 	XCloseDisplay(display);
