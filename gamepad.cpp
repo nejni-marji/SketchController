@@ -146,7 +146,7 @@ void pollGamepadInput(InputData& inputData) {
 		// check if we should exit
 		for (int i=0; i<numInputs; i++) {
 			// guide button exits program
-			if (inputsRaw[i].buttons[5])
+			if (inputsRaw[i].buttons[SDL_CONTROLLER_BUTTON_GUIDE])
 				return;
 		}
 	}
@@ -189,7 +189,7 @@ void queryGamepadInput(InputData& inputData) {
 
 		for (int i=0; i<numInputs; i++) {
 			// guide button exits program
-			if (inputsQuery[i].buttons[5]) {
+			if (inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_GUIDE]) {
 				return;
 			}
 			bool isButtonPressed = false;
@@ -269,6 +269,39 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 				isButtonPressed = true;
 		}
 
+		// handle button presses
+		if (
+				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+				&&
+				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+		   ) {
+			// RB: press
+			dispCur.sendClick(1, true);
+		} else if (
+				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+				&&
+				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+		   ) {
+			// RB: release
+			dispCur.sendClick(1, false);
+		} else if (
+				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+				&&
+				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+		   ) {
+			// LB: release
+			dispCur.sendClick(3, true);
+		} else if (
+				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+				&&
+				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+		   ) {
+			// LB: release
+			dispCur.sendClick(3, false);
+		}
+
+
+		// handle mouse motion
 		// StickPair->StickAngleDelta->StickAngle
 		StickPair sticks = {{{
 			inputsQuery[i].axes[0],
@@ -290,9 +323,11 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 		// sticks.R.speedPx  *= -1;
 
 		if (true || isButtonPressed) {
-			dispCur.setCursorPos(
-					sticks.L.speedPx,
-					sticks.R.speedPx);
+			if (sticks.L.speedPx || sticks.R.speedPx) {
+				dispCur.setCursorPos(
+						sticks.L.speedPx,
+						sticks.R.speedPx);
+			}
 		}
 	}
 }
