@@ -53,7 +53,7 @@ void pollGamepadInput(InputData& inputData) {
 	 * 40) poll for SDL events
 	 * 45) copy only true values from inputsRaw to inputsFrame
 	 * 50) write inputs to database
-	 * 60) try to exit loop
+	 * 60) exit the loop if the guide button is pressed
 	 * 70) }
 	 */
 
@@ -80,7 +80,6 @@ void pollGamepadInput(InputData& inputData) {
 
 				case SDL_CONTROLLERBUTTONDOWN:
 					for (int i=0; i<numInputs; i++) {
-						// if event con is id of joystick of controllers[i]
 						if (event.cbutton.which == SDL_JoystickInstanceID(
 							SDL_GameControllerGetJoystick(connInputs[i])
 							)) {
@@ -91,7 +90,6 @@ void pollGamepadInput(InputData& inputData) {
 
 				case SDL_CONTROLLERBUTTONUP:
 					for (int i=0; i<numInputs; i++) {
-						// if event con is id of joystick of controllers[i]
 						if (event.cbutton.which == SDL_JoystickInstanceID(
 							SDL_GameControllerGetJoystick(connInputs[i])
 							)) {
@@ -102,7 +100,6 @@ void pollGamepadInput(InputData& inputData) {
 
 				case SDL_CONTROLLERAXISMOTION:
 					for (int i=0; i<numInputs; i++) {
-						// if event con is id of joystick of controllers[i]
 						if (event.cbutton.which == SDL_JoystickInstanceID(
 							SDL_GameControllerGetJoystick(connInputs[i])
 							)) {
@@ -134,9 +131,6 @@ void pollGamepadInput(InputData& inputData) {
 			}
 		}
 		// write to database
-		// if we ever support hotplugging, this will probably need to be passed here, as well
-		// inputData.connInputs = connInputs;
-		// is this required?
 		inputData.numInputs = numInputs;
 		inputData.frameReset = frameReset;
 		inputData.inputsRaw = inputsRaw;
@@ -153,7 +147,7 @@ void pollGamepadInput(InputData& inputData) {
 };
 
 void queryGamepadInput(InputData& inputData) {
-	// is this required?
+	// TODO: is this required?
 	sleepFrame(60);
 
 	// initialize database (inputsQueryPrev causes segfault if empty)
@@ -166,7 +160,6 @@ void queryGamepadInput(InputData& inputData) {
 	std::vector<Gamepad> inputsQuery = inputData.inputsFrame;
 	inputData.inputsQuery = inputsQuery;
 	inputData.inputsQueryPrev = inputsQueryPrev;
-	int numInputs = inputData.numInputs;
 	inputData.mtx.unlock();
 
 	while (true) {
@@ -199,12 +192,12 @@ void queryGamepadInput(InputData& inputData) {
 				if (inputsQueryPrev[i].buttons[b])
 					isButtonPressed = true;
 			}
-			if (ENABLE_INPUT_TEST) {
-				if (isButtonPressed) { // prev
+			// show debug data if enabled
+			if (DEBUG_INPUT_TEST) {
+				if (isButtonPressed) {
 					printf("PAD: %i  ", i);
 					printf("AXES:  ");
 					for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
-						// inputsQueryPrev[i].axes[a];
 						printf(
 							"%6i ",
 							inputsQueryPrev[i].axes[a]
@@ -212,7 +205,6 @@ void queryGamepadInput(InputData& inputData) {
 					}
 					printf("BUTTONS:  ");
 					for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-						// inputsQueryPrev[i].buttons[b];
 						printf(
 							"%i",
 							inputsQueryPrev[i].buttons[b]
@@ -220,11 +212,10 @@ void queryGamepadInput(InputData& inputData) {
 					}
 					printf("\n");
 				}
-				if (isButtonPressed) { // cur
+				if (isButtonPressed) {
 					printf("PAD: %i  ", i);
 					printf("AXES:  ");
 					for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
-						// inputsQuery[i].axes[a];
 						printf(
 							"%6i ",
 							inputsQuery[i].axes[a]
@@ -232,7 +223,6 @@ void queryGamepadInput(InputData& inputData) {
 					}
 					printf("BUTTONS:  ");
 					for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-						// inputsQuery[i].buttons[b];
 						printf(
 							"%i",
 							inputsQuery[i].buttons[b]
@@ -242,6 +232,7 @@ void queryGamepadInput(InputData& inputData) {
 				}
 			}
 		}
+		// run cursor calculations for each controller
 		executeFrame(inputsQuery, inputsQueryPrev, numInputs, dispCur);
 	sleepFrame();
 	}
@@ -302,7 +293,7 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 
 
 		// handle mouse motion
-		// StickPair->StickAngleDelta->StickAngle
+		// StickPair -> StickAngleDelta -> StickAngle
 		StickPair sticks = {{{
 			inputsQuery[i].axes[0],
 			inputsQuery[i].axes[1],
@@ -317,9 +308,12 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 			inputsQueryPrev[i].axes[3],
 		}}};
 
+		// calculate speeds
 		calcStickAngleDelta(sticks.L);
 		calcStickAngleDelta(sticks.R);
+
 		// invert the right stick
+		// TODO: add command line option for this
 		sticks.R.speedRad *= -1;
 		sticks.R.speedPx  *= -1;
 
@@ -354,17 +348,15 @@ void calcStickAngleDelta(StickAngleDelta& delta) {
 
 void calcStickAngle(StickAngle& angle) {
 	angle.r = sqrt( angle.x*angle.x + angle.y*angle.y );
+	// reset values if within the deadzone
 	if (angle.r < STICK_DEADZONE) {
 		angle.x = 0;
 		angle.y = 0;
 		angle.r = 0;
-		angle.a = 0; // TODO: NaN
+		angle.a = 0;
 		angle.isDeadzone = true;
 	}
-	// default output of atan:
-	//           -90°
-	//     ±180°      ±0°
-	//            90°
+	// adjust the angles so that they can be used more easily later
 	angle.a = atan2(angle.y, angle.x);
 	if (angle.a<0) {
 		angle.a+=2*M_PI;

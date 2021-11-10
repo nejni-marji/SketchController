@@ -11,8 +11,6 @@ class DisplayCursor {
 		// constructors
 		DisplayCursor(): DisplayCursor(0) {};
 		DisplayCursor(char* d);
-		// this destructor seemed like a good idea but it causes crashes
-		// ~DisplayCursor();
 		// data functions
 		void getDisplaySize(int& w, int& h);
 		void getCursorPos(int& x, int& y);

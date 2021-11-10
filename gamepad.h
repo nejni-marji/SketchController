@@ -11,19 +11,17 @@
 #include "util.h"
 
 // debug
-const bool ENABLE_INPUT_TEST = false;
-const bool ENABLE_ANGLE_TEST = false;
+const bool DEBUG_INPUT_TEST = true;
 
-// deadzone stuff
-// TODO: how many of these do i actually use?
-const int STICK_MAX = 32678;
-const int STICK_MIN = -32677;
-// const int STICK_DEADZONE = 0.15*STICK_MAX;
+// stick properties
+const int STICK_MAX =  32677;
+const int STICK_MIN = -32678;
 const int STICK_DEADZONE = 0.95*STICK_MAX;
 const double STICK_WRAP_HI = 1.75*M_PI;
 const double STICK_WRAP_LO = 0.25*M_PI;
 
 // adjusting cursor speed
+// TODO: add command line option for this
 const double PX_PER_TURN  = 500;
 const double RAD_PER_TURN = 2*M_PI;
 const double PX_PER_RAD = PX_PER_TURN/RAD_PER_TURN;

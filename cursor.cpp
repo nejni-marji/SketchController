@@ -8,10 +8,6 @@ DC::DisplayCursor(char* d) {
 	height  = XHeightOfScreen(screen);
 }
 
-// DC::~DisplayCursor() {
-// 	XCloseDisplay(display);
-// }
-
 void DC::getDisplaySize(int& w, int& h) {
 	w=width;
 	h=height;
@@ -46,65 +42,6 @@ void DC::setCursorPos(int x, int y, bool isAbs) {
 			);
 	XFlush(display);
 }
-
-// // i stole most of this code from a forum post lol, wish me luck
-// void DC::sendClickOld(int button, char mode) {
-// 	// make and initialize an event object
-// 	XEvent event;
-// 	memset(&event, 0x00, sizeof(event));
-
-// 	// start filling the event with real data
-// 	switch (mode) {
-// 		case ('P'):
-// 			event.type = ButtonPress;
-// 			break;
-// 		case ('R'):
-// 			event.type = ButtonRelease;
-// 			break;
-// 	}
-// 	event.xbutton.button = button;
-// 	event.xbutton.same_screen = True;
-// 	XQueryPointer(
-// 			display,
-// 			root,
-// 			&event.xbutton.root,
-// 			&event.xbutton.window,
-// 			&event.xbutton.x_root,
-// 			&event.xbutton.y_root,
-// 			&event.xbutton.x,
-// 			&event.xbutton.y,
-// 			&event.xbutton.state
-// 			);
-// 	event.xbutton.subwindow = event.xbutton.window;
-
-// 	// this loop seems to store the last valid subwindow into window
-// 	// i'm not really sure why that's necessary, but i'll keep it for now
-// 	while(event.xbutton.subwindow)
-// 	{
-// 		event.xbutton.window = event.xbutton.subwindow;
-
-// 		XQueryPointer(
-// 				display,
-// 				event.xbutton.window,
-// 				&event.xbutton.root,
-// 				&event.xbutton.subwindow,
-// 				&event.xbutton.x_root,
-// 				&event.xbutton.y_root,
-// 				&event.xbutton.x,
-// 				&event.xbutton.y,
-// 				&event.xbutton.state
-// 				);
-// 	}
-
-// 	// 0xfff is a full event mask to pass all events through to the client
-// 	// i'm not sure what that means *exactly*, but it sounds good
-// 	if ( XSendEvent(display, PointerWindow, True, 0xfff, &event) == 0 ) {
-// 		fprintf(stderr, "Error sending event !!!\n");
-// 	}
-
-// 	// finally flush the display
-// 	XFlush(display);
-// }
 
 void DC::sendClick(int button, bool down) {
 	Display *display = XOpenDisplay(NULL);
