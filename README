@@ -1,0 +1,9 @@
+SketchController is a program that uses an external gamepad to simulate the effect of an Etch-A-Sketch. Spinning the joysticks on the controller will move your cursor either horizontally or vertically. The right shoulder button is left click, and the left shoulder button is right click.
+
+To exit the program at any time, press the guide button on your controller.
+
+Dependencies:
+	libsdl2-dev
+	libx11-dev
+	libxtst-dev
+	libc6-dev
