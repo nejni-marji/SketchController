@@ -319,8 +319,9 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 
 		calcStickAngleDelta(sticks.L);
 		calcStickAngleDelta(sticks.R);
-		// sticks.R.speedRad *= -1;
-		// sticks.R.speedPx  *= -1;
+		// invert the right stick
+		sticks.R.speedRad *= -1;
+		sticks.R.speedPx  *= -1;
 
 		if (true || isButtonPressed) {
 			if (sticks.L.speedPx || sticks.R.speedPx) {
