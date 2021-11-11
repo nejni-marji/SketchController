@@ -9,8 +9,7 @@
 class DisplayCursor {
 	public:
 		// constructors
-		DisplayCursor(): DisplayCursor(0) {};
-		DisplayCursor(char* d);
+		DisplayCursor();
 		// data functions
 		void getDisplaySize(int& w, int& h);
 		void getCursorPos(int& x, int& y);

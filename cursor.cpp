@@ -1,7 +1,7 @@
 #include "cursor.h"
 
-DC::DisplayCursor(char* d) {
-	display = XOpenDisplay(d);
+DC::DisplayCursor() {
+	display = XOpenDisplay(NULL);
 	screen  = XDefaultScreenOfDisplay(display);
 	root    = XDefaultRootWindow(display);
 	width   = XWidthOfScreen(screen);
