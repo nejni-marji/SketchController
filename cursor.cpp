@@ -28,7 +28,7 @@ void DC::getCursorPos(int& x, int& y) {
 }
 
 void DC::setCursorPos(int x, int y) {
-	XTestFakeMotionEvent(display, x, y, CurrentTime);
+	XTestFakeRelativeMotionEvent(display, x, y, CurrentTime);
 	XFlush(display);
 }
 
