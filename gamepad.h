@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <mutex>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_gamecontroller.h>
