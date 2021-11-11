@@ -14,7 +14,7 @@ class DisplayCursor {
 		// data functions
 		void getDisplaySize(int& w, int& h);
 		void getCursorPos(int& x, int& y);
-		void setCursorPos(int x, int y, bool isAbs=false);
+		void setCursorPos(int x, int y);
 		// void sendClickOld(int button, char mode);
 		void sendClick(int button, bool down);
 		// button to click, mode is press or release

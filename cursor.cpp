@@ -30,22 +30,12 @@ void DC::getCursorPos(int& x, int& y) {
 			);
 }
 
-void DC::setCursorPos(int x, int y, bool isAbs) {
-	XSelectInput(display, root, KeyReleaseMask);
-	// void XWarpPointer(display, src_w, dest_w, src_x, src_y, src_width,
-	// src_height, dest_x, dest_y)
-	//
-	// Set dest_w to None to use relative movement
-	XWarpPointer(
-			display, None, (isAbs ? root : None),
-			0, 0, 0, 0, x, y
-			);
+void DC::setCursorPos(int x, int y) {
+	XTestFakeMotionEvent(display, x, y, CurrentTime);
 	XFlush(display);
 }
 
 void DC::sendClick(int button, bool down) {
-	Display *display = XOpenDisplay(NULL);
 	XTestFakeButtonEvent(display, button, down, CurrentTime);
 	XFlush(display);
-	XCloseDisplay(display);
 }
