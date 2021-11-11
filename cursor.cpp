@@ -14,16 +14,13 @@ void DC::getDisplaySize(int& w, int& h) {
 }
 
 void DC::getCursorPos(int& x, int& y) {
-	// bool XQueryPointer(display, w, root_return, child_return, root_x_return,
-	// root_y_return, win_x_return, win_y_return, mask_return)
-	//
 	// XQueryPointer segfaults if it writes to 0x00000000
 	nullptr_t null = NULL;
 	XQueryPointer(
 			display, root,
 			(Window*) &null,
 			(Window*) &null,
-			&x, &y, // dereference values passed by reference
+			&x, &y,
 			(int*) &null,
 			(int*) &null,
 			(unsigned int*) &null
