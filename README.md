@@ -31,3 +31,7 @@ Pressing the guide/home button exits the program.
     - [ ] invert stick controls
     - [ ] enable debug log
     - [ ] adjustable internal framerate?
+
+## Notes
+
+This is a Linux (and X11) specific program. I don't really want to personally make a Windows build of this, but if you do, and you have any questions about the source, feel free to ask me about it.
