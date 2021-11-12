@@ -1,9 +1,9 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SKETCHCONTROLLER_H
+#define SKETCHCONTROLLER_H
 
 #include <thread>
 #include "gamepad.cpp"
 #include "cursor.cpp"
 #include "util.cpp"
 
-#endif // MAIN_H
+#endif // SKETCHCONTROLLER_H
