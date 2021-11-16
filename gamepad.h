@@ -9,9 +9,6 @@
 #include "cursor.h"
 #include "util.h"
 
-// debug
-const bool DEBUG_INPUT_TEST = true;
-
 // stick properties
 const int STICK_MAX =  32677;
 const int STICK_MIN = -32678;
@@ -20,10 +17,7 @@ const double STICK_WRAP_HI = 1.75*M_PI;
 const double STICK_WRAP_LO = 0.25*M_PI;
 
 // adjusting cursor speed
-// TODO: add command line option for this
-const double PX_PER_TURN  = 500;
 const double RAD_PER_TURN = 2*M_PI;
-const double PX_PER_RAD = PX_PER_TURN/RAD_PER_TURN;
 
 // TODO: rename this?
 struct Gamepad {

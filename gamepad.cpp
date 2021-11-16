@@ -192,8 +192,9 @@ void queryGamepadInput(InputData& inputData) {
 				if (inputsQueryPrev[i].buttons[b])
 					isButtonPressed = true;
 			}
-			// show debug data if enabled
-			if (DEBUG_INPUT_TEST) {
+			// show debug data if verbose flag is enabled
+			// TODO: move this to executeFrame and add angle data to it
+			if (CONFIG.verbose) {
 				if (isButtonPressed) {
 					printf("PAD: %i  ", i);
 					printf("AXES:  ");
@@ -303,10 +304,21 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 		calcStickAngleDelta(sticks.L);
 		calcStickAngleDelta(sticks.R);
 
-		// invert the right stick
-		// TODO: add command line option for this
-		sticks.R.speedRad *= -1;
-		sticks.R.speedPx  *= -1;
+		// swap sticks if flag is enabled
+		if (CONFIG.swapSticks) {
+			StickPair swappedSticks = {sticks.R, sticks.L};
+			sticks = swappedSticks;
+		}
+
+		// invert sticks if respective flag is enabled
+		if (CONFIG.invertX) {
+			sticks.L.speedRad *= -1;
+			sticks.L.speedPx  *= -1;
+		}
+		if (CONFIG.invertY) {
+			sticks.R.speedRad *= -1;
+			sticks.R.speedPx  *= -1;
+		}
 
 		if (sticks.L.speedPx || sticks.R.speedPx) {
 			dispCur.setCursorPos(
@@ -331,7 +343,8 @@ void calcStickAngleDelta(StickAngleDelta& delta) {
 		delta.speedPx  = 0;
 	} else {
 		delta.speedRad = delta.curr.a - delta.prev.a;
-		delta.speedPx  = delta.speedRad * PX_PER_RAD;
+		// px = rad * px/turn / rad/turn
+		delta.speedPx  = delta.speedRad * CONFIG.speed/RAD_PER_TURN;
 	}
 }
 
