@@ -251,15 +251,6 @@ void nullifyGamepadInput(std::vector<Gamepad>& inputs, int& numInputs) {
 
 void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQueryPrev, int numInputs, DisplayCursor dispCur) {
 	for (int i=0; i<numInputs; i++) {
-		// get isButtonPressed
-		bool isButtonPressed = false;
-		for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-			if (inputsQuery[i].buttons[b])
-				isButtonPressed = true;
-			if (inputsQueryPrev[i].buttons[b])
-				isButtonPressed = true;
-		}
-
 		// handle button presses
 		if (
 				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
@@ -317,12 +308,10 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 		sticks.R.speedRad *= -1;
 		sticks.R.speedPx  *= -1;
 
-		if (true || isButtonPressed) {
-			if (sticks.L.speedPx || sticks.R.speedPx) {
-				dispCur.setCursorPos(
-						sticks.L.speedPx,
-						sticks.R.speedPx);
-			}
+		if (sticks.L.speedPx || sticks.R.speedPx) {
+			dispCur.setCursorPos(
+					sticks.L.speedPx,
+					sticks.R.speedPx);
 		}
 	}
 }
