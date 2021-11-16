@@ -256,28 +256,28 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
 				&&
 				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-		   ) {
+		) {
 			// RB: press
 			dispCur.sendClick(1, true);
 		} else if (
 				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
 				&&
 				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-		   ) {
+		) {
 			// RB: release
 			dispCur.sendClick(1, false);
 		} else if (
 				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
 				&&
 				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-		   ) {
+		) {
 			// LB: release
 			dispCur.sendClick(3, true);
 		} else if (
 				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
 				&&
 				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-		   ) {
+		) {
 			// LB: release
 			dispCur.sendClick(3, false);
 		}
