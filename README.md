@@ -26,11 +26,13 @@ Pressing the guide/home button exits the program.
 
 ## Task List
 
-- [ ] command line options
-    - [ ] set cursor speed
-    - [ ] invert stick controls
-    - [ ] enable debug log
-    - [ ] adjustable internal framerate?
+- [x] command line options
+    - [x] set cursor speed
+    - [x] invert stick controls
+    - [x] swap sticks
+    - [x] enable debug log
+    - [x] ~~adjustable internal framerate?~~
+    - [x] ~~adjustable deadzone?~~
 
 ## Notes
 
