@@ -252,38 +252,8 @@ void nullifyGamepadInput(std::vector<Gamepad>& inputs, int& numInputs) {
 
 void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQueryPrev, int numInputs, DisplayCursor dispCur) {
 	for (int i=0; i<numInputs; i++) {
-		// handle button presses
-		if (
-				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-				&&
-				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-		) {
-			// RB: press
-			dispCur.sendClick(1, true);
-		} else if (
-				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-				&&
-				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
-		) {
-			// RB: release
-			dispCur.sendClick(1, false);
-		} else if (
-				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-				&&
-				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-		) {
-			// LB: release
-			dispCur.sendClick(3, true);
-		} else if (
-				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-				&&
-				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-		) {
-			// LB: release
-			dispCur.sendClick(3, false);
-		}
 
-		// handle mouse motion
+		// calculate angles and cursor movement
 		// StickPair -> StickAngleDelta -> StickAngle
 		StickPair sticks = {{{
 			inputsQuery[i].axes[0],
@@ -319,6 +289,38 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 			sticks.R.speedPx  *= -1;
 		}
 
+		// handle button presses
+		if (
+				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+				&&
+				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+		) {
+			// RB: press
+			dispCur.sendClick(1, true);
+		} else if (
+				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+				&&
+				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]
+		) {
+			// RB: release
+			dispCur.sendClick(1, false);
+		} else if (
+				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+				&&
+				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+		) {
+			// LB: release
+			dispCur.sendClick(3, true);
+		} else if (
+				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+				&&
+				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+		) {
+			// LB: release
+			dispCur.sendClick(3, false);
+		}
+
+		// handle mouse motion
 		if (sticks.L.speedPx || sticks.R.speedPx) {
 			dispCur.setCursorPos(
 					sticks.L.speedPx,
