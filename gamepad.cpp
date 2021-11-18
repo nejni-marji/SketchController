@@ -283,7 +283,6 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 			dispCur.sendClick(3, false);
 		}
 
-
 		// handle mouse motion
 		// StickPair -> StickAngleDelta -> StickAngle
 		StickPair sticks = {{{
