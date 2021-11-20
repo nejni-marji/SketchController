@@ -343,16 +343,16 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 			// RB: release
 			dispCur.sendClick(1, false);
 		} else if (
-				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-				&&
-				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
-		) {
-			// LB: release
-			dispCur.sendClick(3, true);
-		} else if (
 				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
 				&&
 				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+		) {
+			// LB: press
+			dispCur.sendClick(3, true);
+		} else if (
+				! inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
+				&&
+				inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]
 		) {
 			// LB: release
 			dispCur.sendClick(3, false);
