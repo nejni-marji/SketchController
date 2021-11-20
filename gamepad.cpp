@@ -356,6 +356,13 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 		) {
 			// LB: release
 			dispCur.sendClick(3, false);
+		} else if (
+				inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_X]
+				&&
+				! inputsQueryPrev[i].buttons[SDL_CONTROLLER_BUTTON_X]
+		) {
+			// X: press
+				dispCur.sendKey();
 		}
 
 		// handle mouse motion

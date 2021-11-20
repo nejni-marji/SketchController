@@ -2,6 +2,8 @@
 #define CURSOR_H
 
 #include <X11/Xlib.h>
+#define XK_LATIN1
+#include <X11/keysymdef.h>
 #include <X11/extensions/XTest.h>
 #include <iostream>
 
@@ -12,6 +14,7 @@ class DisplayCursor {
 		void getCursorPos(int& x, int& y);
 		void setCursorPos(int x, int y);
 		void sendClick(int button, bool down);
+		void sendKey();
 	private:
 		Display* display;
 		Screen* screen;
