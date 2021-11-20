@@ -185,53 +185,6 @@ void queryGamepadInput(InputData& inputData) {
 			if (inputsQuery[i].buttons[SDL_CONTROLLER_BUTTON_GUIDE]) {
 				return;
 			}
-			bool isButtonPressed = false;
-			for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-				if (inputsQuery[i].buttons[b])
-					isButtonPressed = true;
-				if (inputsQueryPrev[i].buttons[b])
-					isButtonPressed = true;
-			}
-			// show debug data if verbose flag is enabled
-			// TODO: move this to executeFrame and add angle data to it
-			if (CONFIG.verbose) {
-				if (isButtonPressed) {
-					printf("PAD: %i  ", i);
-					printf("AXES:  ");
-					for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
-						printf(
-							"%6i ",
-							inputsQueryPrev[i].axes[a]
-						);
-					}
-					printf("BUTTONS:  ");
-					for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-						printf(
-							"%i",
-							inputsQueryPrev[i].buttons[b]
-						);
-					}
-					printf("\n");
-				}
-				if (isButtonPressed) {
-					printf("PAD: %i  ", i);
-					printf("AXES:  ");
-					for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
-						printf(
-							"%6i ",
-							inputsQuery[i].axes[a]
-						);
-					}
-					printf("BUTTONS:  ");
-					for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
-						printf(
-							"%i",
-							inputsQuery[i].buttons[b]
-						);
-					}
-					printf("\n");
-				}
-			}
 		}
 		// run cursor calculations for each controller
 		executeFrame(inputsQuery, inputsQueryPrev, numInputs, dispCur);
@@ -287,6 +240,91 @@ void executeFrame(std::vector<Gamepad> inputsQuery, std::vector<Gamepad> inputsQ
 		if (CONFIG.invertY) {
 			sticks.R.speedRad *= -1;
 			sticks.R.speedPx  *= -1;
+		}
+
+		// show debug data if verbose flag is enabled
+		bool isButtonPressed = false;
+		for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
+			if (inputsQuery[i].buttons[b])
+				isButtonPressed = true;
+			if (inputsQueryPrev[i].buttons[b])
+				isButtonPressed = true;
+		}
+		if (CONFIG.verbose && isButtonPressed) {
+
+			// previous frame raw data
+			{
+				printf("PREV: ");
+				printf("%i ", i);
+				for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
+					printf(
+							"% 06i ",
+							inputsQueryPrev[i].axes[a]
+						);
+				}
+				// printf("  ");
+				for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
+					printf(
+							"%i",
+							inputsQueryPrev[i].buttons[b]
+						);
+				}
+				printf("\n");
+			}
+
+			// current frame raw data
+			{
+				printf("CURR: ");
+				printf("%i ", i);
+				for (int a=0; a<SDL_CONTROLLER_AXIS_MAX; a++) {
+					printf(
+							"% 06i ",
+							inputsQuery[i].axes[a]
+						);
+				}
+				// printf("  ");
+				for (int b=0; b<SDL_CONTROLLER_BUTTON_MAX; b++) {
+					printf(
+							"%i",
+							inputsQuery[i].buttons[b]
+						);
+				}
+				printf("\n");
+			}
+
+			// left stick angle data
+			{
+				printf("LEFT: ");
+				printf("%i ", sticks.L.curr.isDeadzone);
+				printf(
+						"% 13.6f "
+						"% 13.10f "
+						"% 13.10f "
+						"% i",
+						sticks.L.curr.r,
+						sticks.L.curr.a,
+						sticks.L.speedRad,
+						sticks.L.speedPx
+					);
+				printf("\n");
+			}
+
+			// right stick angle data
+			{
+				printf("RGHT: ");
+				printf("%i ", sticks.R.curr.isDeadzone);
+				printf(
+						"% 13.6f "
+						"% 13.10f "
+						"% 13.10f "
+						"% i",
+						sticks.R.curr.r,
+						sticks.R.curr.a,
+						sticks.R.speedRad,
+						sticks.R.speedPx
+					);
+				printf("\n");
+			}
 		}
 
 		// handle button presses
