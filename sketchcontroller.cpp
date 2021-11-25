@@ -4,7 +4,7 @@ int main(int argc, char** argv) {
 	// parse command-line options
 	while (true)
 	{
-		switch(getopt(argc, argv, "hvs:xXyYzZ"))
+		switch(getopt(argc, argv, "hvs:d:xXyYzZ"))
 		{
 			case 'v':
 				CONFIG.verbose = true;
@@ -12,6 +12,10 @@ int main(int argc, char** argv) {
 
 			case 's':
 				CONFIG.speed = atoi(optarg);
+				continue;
+
+			case 'd':
+				CONFIG.deadzone = atof(optarg);
 				continue;
 
 			case 'x':
@@ -75,14 +79,15 @@ int main(int argc, char** argv) {
 void printHelp() {
 	printf(
 			"Usage: sketchcontroller [ -h -v -xXyYzZ ] [ -s SPEED ]\n"
-			"  -h          show this message and exit\n"
-			"  -v          run verbosely\n"
-			"  -s SPEED    set cursor speed in pixels/turn   (default: 500)\n"
-			"  -x          invert x-axis\n"
-			"  -X          do not invert x-axis   (default)\n"
-			"  -y          invert y-axis   (default)\n"
-			"  -Y          do not invert y-axis\n"
-			"  -z          swap left and right sticks\n"
-			"  -Z          do not swap sticks   (default)\n"
+			"  -h           show this message and exit\n"
+			"  -v           run verbosely\n"
+			"  -s SPEED     set cursor speed in pixels/turn   (default: 500)\n"
+			"  -d DEADZONE  set analog stick deadzone   (default: 0.75)\n"
+			"  -x           invert x-axis\n"
+			"  -X           do not invert x-axis   (default)\n"
+			"  -y           invert y-axis   (default)\n"
+			"  -Y           do not invert y-axis\n"
+			"  -z           swap left and right sticks\n"
+			"  -Z           do not swap sticks   (default)\n"
 		);
 }

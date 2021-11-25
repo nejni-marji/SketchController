@@ -12,7 +12,6 @@
 // stick properties
 const int STICK_MAX =  32677;
 const int STICK_MIN = -32678;
-const int STICK_DEADZONE = 0.95*STICK_MAX;
 const double STICK_WRAP_HI = 1.75*M_PI;
 const double STICK_WRAP_LO = 0.25*M_PI;
 

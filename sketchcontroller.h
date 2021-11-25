@@ -4,6 +4,7 @@
 struct Config {
 	bool verbose = false;
 	int speed = 500;
+	double deadzone = 75;
 	bool invertX = false;
 	bool invertY = true;
 	bool swapSticks = false;

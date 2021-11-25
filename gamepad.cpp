@@ -390,7 +390,7 @@ void calcStickAngleDelta(StickAngleDelta& delta) {
 void calcStickAngle(StickAngle& angle) {
 	angle.r = sqrt( angle.x*angle.x + angle.y*angle.y );
 	// reset values if within the deadzone
-	if (angle.r < STICK_DEADZONE) {
+	if (angle.r < STICK_MAX * CONFIG.deadzone) {
 		angle.x = 0;
 		angle.y = 0;
 		angle.r = 0;
