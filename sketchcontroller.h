@@ -2,10 +2,10 @@
 #define SKETCHCONTROLLER_H
 
 struct Config {
-	bool verbose    = false;
-	int  speed      = 500;
-	bool invertX    = false;
-	bool invertY    = true;
+	bool verbose = false;
+	int speed = 500;
+	bool invertX = false;
+	bool invertY = true;
 	bool swapSticks = false;
 };
 
