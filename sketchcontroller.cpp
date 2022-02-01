@@ -57,6 +57,9 @@ int main(int argc, char** argv) {
 		break;
 	}
 
+	// handle SIGINT gracefully
+	signal(SIGINT, sigintHandler);
+
 	// make database, start threads
 	InputData inputData;
 	inputData.dispCur = DisplayCursor();
@@ -73,6 +76,11 @@ int main(int argc, char** argv) {
 	inputData.dispCur.sendClick(3, false);
 
 	return 0;
+}
+
+void sigintHandler(int sig) {
+	printf("\nCaught Ctrl-C, exiting...\n");
+	exit(0);
 }
 
 void printHelp() {

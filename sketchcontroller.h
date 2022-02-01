@@ -14,11 +14,13 @@ Config CONFIG;
 
 #include <stdio.h>
 #include <getopt.h>
+#include <signal.h>
 #include <thread>
 #include "gamepad.cpp"
 #include "cursor.cpp"
 #include "util.cpp"
 
+void sigintHandler(int sig);
 void printHelp();
 
 #endif // SKETCHCONTROLLER_H
